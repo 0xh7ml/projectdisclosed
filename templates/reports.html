@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+    {% block title %} 
+        Reports
+    {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input class="form-control" id="cweFilter" placeholder="Filter by CWE">
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" id="severityFilter">
+                <option value="">Filter by Severity</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" id="readStatusFilter">
+                <option value="">Filter by Read Status</option>
+                <option value="1">Read</option>
+                <option value="0" selected>Unread</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered" id="vulnerabilityTable">
+            <thead class="thead-light">
+                <tr>
+                    <th>Id</th>
+                    <th>Report Title</th>
+                    <th>Report CWE</th>
+                    <th>Report Severity</th>
+                    <th>Report State</th>
+                    <th>Report URL</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in data %}                
+                <tr>
+                    <td>{{ report.report_id }} </td>
+                    <td>{{ report.title }} </td>
+                    <td>{{ report.cwe}} </td>
+                    <td>{{ report.severity }} </td>
+                    <td>{{ report.state }}</td>
+                    <td>
+                        <a href="{{ report.url }}">Link</a>
+                    </td>
+                    <td>{% csrf_token %} <a href="/reports/{{report.report_id}}"><i class="bi bi-check-all"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

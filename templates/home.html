@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12"><h2>Overview </h2></div>
+    <div class="col-md-4 mb-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Vulnerability Type</h5>
+                <canvas id="vulnerabilityTypeChart" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Severity Type</h5>
+                <canvas id="severityTypeChart" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Read/Unread</h5>
+                <canvas id="readStatusChart" width="100%" height="100%"></canvas>
+            </div>
+        </div>
+    </div>
+    </div>
+</div> 
+
+<script>
+    // Data for charts
+    var vulnerabilityTypeData = {
+        labels: ["SQL Injection", "Cross-Site Scripting", "Path Traversal"],
+        datasets: [{
+            data: [30, 20, 15],
+            backgroundColor: ["#ff6384", "#36a2eb", "#ffce56"]
+        }]
+    };
+
+    var severityTypeData = {
+        labels: ["Low", "Medium", "High"],
+        datasets: [{
+            data: [10, 15, 25],
+            backgroundColor: ["#36a2eb", "#ffce56", "#ff6384"]
+        }]
+    };
+
+    var readStatusData = {
+        labels: ["Read", "Unread"],
+        datasets: [{
+            data: [40, 30],
+            backgroundColor: ["#36a2eb", "#ff6384"]
+        }]
+    };
+
+    // Configuration for charts
+    var chartOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+        legend: {
+            position: 'right'
+        }
+    };
+
+    // Create charts
+    var ctx1 = document.getElementById("vulnerabilityTypeChart");
+    new Chart(ctx1, {
+        type: 'doughnut',
+        data: vulnerabilityTypeData,
+        options: chartOptions
+    });
+
+    var ctx2 = document.getElementById("severityTypeChart").getContext("2d");
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: severityTypeData,
+        options: chartOptions
+    });
+
+    var ctx3 = document.getElementById("readStatusChart").getContext("2d");
+    new Chart(ctx3, {
+        type: 'pie',
+        data: readStatusData,
+        options: chartOptions
+    });
+</script>
+{% endblock content %}
