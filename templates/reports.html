@@ -37,21 +37,32 @@
                     <th>Report Severity</th>
                     <th>Report State</th>
                     <th>Report URL</th>
-                    <th>Action</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                {% for report in data %}                
+                {% for i in data %}                
                 <tr>
-                    <td>{{ report.report_id }} </td>
-                    <td>{{ report.title }} </td>
-                    <td>{{ report.cwe}} </td>
-                    <td>{{ report.severity }} </td>
-                    <td>{{ report.state }}</td>
+                    <td>{{ i.report.report_id }} </td>
+                    <td>{{ i.report.title }} </td>
+                    <td>{{ i.report.cwe}} </td>
+                    <td>{{ i.report.severity }} </td>
+                    <td>{{ i.report.state }}</td>
                     <td>
-                        <a href="{{ report.url }}">Link</a>
+                        <a href="{{ i.report.url }}">Link</a>
                     </td>
-                    <td>{% csrf_token %} <a href="/reports/{{report.report_id}}"><i class="bi bi-check-all"></i></a></td>
+                    <td>
+                        {% if i.is_read != True %}                    
+                         
+                        <form id="markAsRead">
+                            {% csrf_token %}
+                            <input type="hidden" id="report_id" value="{{i.report.report_id}}">
+                            <button type="submit" class="btn btn-primary btn-xs" id="readBtn"><i class="bi bi-check2"></i></button>
+                        </form>
+                        {% else %}
+                            <button type="button" class="btn btn-success btn-xs" disabled><i class="bi bi-check2-all"></i></button>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
 # Create your models here.
 class Report(models.Model):
     report_id =  models.IntegerField()
@@ -15,6 +17,6 @@ class Report(models.Model):
 
 
 class ReportReadStatus(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    report = models.ForeignKey(Report, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True, blank=True)
     is_read = models.BooleanField(default=False)

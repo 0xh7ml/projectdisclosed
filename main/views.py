@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404 ,redirect
+from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 from .models import *
 
@@ -32,11 +34,10 @@ def dashboard(request):
 
 @login_required(login_url='Login')
 def reports(request):
-    data = Report.objects.all()
+    data = ReportReadStatus.objects.all()
     context = {
-        'data' : data
+        "data" : data
     }
-    
     return render(request, 'reports.html', context=context)
 
 @login_required(login_url='Login')
@@ -44,7 +45,7 @@ def update_reports(request, report_id):
     if request.method == "POST":
         report = get_object_or_404(Report, report_id = report_id)
         if request.user.is_authenticated:
-            report_read_status = ReportReadStatus.objects.get_or_create(user=request.user, report=report)
+            report_read_status,created = ReportReadStatus.objects.get_or_create(user=request.user, report=report)
             report_read_status.is_read = True
             report_read_status.save()
             return HttpResponse('Success')
