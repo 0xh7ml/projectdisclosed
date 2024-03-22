@@ -16,13 +16,14 @@
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
+                <option value="High">Critical</option>
             </select>
         </div>
         <div class="col-md-4">
             <select class="form-control" id="readStatusFilter">
                 <option value="">Filter by Read Status</option>
-                <option value="1">Read</option>
-                <option value="0" selected>Unread</option>
+                <option value="True">Read</option>
+                <option value="False">Unread</option>
             </select>
         </div>
     </div>
@@ -45,8 +46,8 @@
                 <tr>
                     <td>{{ report.report_id }} </td>
                     <td>{{ report.title }} </td>
-                    <td>{{ report.cwe}} </td>
-                    <td>{{ report.severity }} </td>
+                    <td data-cwe="{{report.cwe}}">{{ report.cwe}} </td>
+                    <td data-severity="{{report.severity}}">{{ report.severity }} </td>
                     <td>{{ report.state }}</td>
                     <td>
                         <a href="{{ report.url }}" target="_blank">Link</a>
@@ -55,10 +56,11 @@
 
                     {% if report.is_read == True %}
                         <button type="button" class="btn btn-success btn-xs" disabled><i class="bi bi-check2-all"></i></button>
-                        
+                        <input type="hidden" data-read="{{report.is_read}}">
                         {% else %}
                             <form id="markAsRead">
                                 {% csrf_token %}
+                                <input type="hidden" data-read="{{report.is_read}}">
                                 <input type="hidden" id="report_id" value="{{ report.report_id}}">
                                 <button type="submit" class="btn btn-primary btn-xs" id="readBtn"><i class="bi bi-check2"></i></button>
                             </form>
@@ -70,4 +72,5 @@
         </table>
     </div>
 </div>
+
 {% endblock content %}

@@ -32,8 +32,7 @@
             </div>
         </div>
     </div>
-    </div>
-</div> 
+</div>
 
 <script>
     // Data for charts
@@ -53,28 +52,26 @@
 };
 
     var severityTypeData = {
-        labels: [
-            {% for i in severity_data %}
-                '{{ i.severity }}', 
-            {% endfor %}
-        ],
+        labels: ['Low', 'Medium', 'High', 'Critical'],
         datasets: [{
             data: [
                 {% for i in severity_data %}
                 '{{ i.severity_dataset }}', 
                 {% endfor %}
             ],
+            backgroundColor: ['#e5f2d6','#fdf2e3','#ffe7d6','#f8dfdf']
         }]
     };
 
     var readStatusData = {
-        labels: ["Read", "Unread"],
+        labels: ["Unread", "Read"],
         datasets: [{
             data: [
             {% for i in read_data %}
             '{{ i.is_read_dataset }}', 
             {% endfor %}
         ],
+        backgroundColor : ['#DC3545','#198754']
         }]
     };
 
@@ -90,21 +87,21 @@
     // Create charts
     var ctx1 = document.getElementById("vulnerabilityTypeChart");
     new Chart(ctx1, {
-        type: 'doughnut',
+        type: 'bar',
         data: vulnerabilityTypeData,
         options: chartOptions
     });
 
     var ctx2 = document.getElementById("severityTypeChart").getContext("2d");
     new Chart(ctx2, {
-        type: 'doughnut',
+        type: 'bar',
         data: severityTypeData,
         options: chartOptions
     });
 
     var ctx3 = document.getElementById("readStatusChart").getContext("2d");
     new Chart(ctx3, {
-        type: 'doughnut',
+        type: 'bar',
         data: readStatusData,
         options: chartOptions
     });

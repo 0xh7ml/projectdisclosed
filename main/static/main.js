@@ -63,3 +63,38 @@ async function showErrorMessage() {
     });
 }
 
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const cweFilterInput = document.getElementById('cweFilter');
+    const severityFilterSelect = document.getElementById('severityFilter');
+    const readStatusFilterSelect = document.getElementById('readStatusFilter');
+
+    const filterRows = () => {
+        const cweFilter = cweFilterInput.value.trim().toLowerCase();
+        const severityFilter = severityFilterSelect.value;
+        const readStatusFilter = readStatusFilterSelect.value;
+
+        const rows = document.querySelectorAll('#vulnerabilityTable tbody tr');
+
+        rows.forEach(row => {
+            const cwe = row.querySelector('[data-cwe]').getAttribute('data-cwe').toLowerCase();
+            const severity = row.querySelector('[data-severity]').getAttribute('data-severity').toLowerCase();
+            const readStatus = row.querySelector('[data-read]').getAttribute('data-read');
+
+            const cweMatch = cwe.includes(cweFilter);
+            const severityMatch = severity === severityFilter || severityFilter === "";
+            const readStatusMatch = readStatus === readStatusFilter || readStatusFilter === "";
+
+            if (cweMatch && severityMatch && readStatusMatch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    };
+
+    cweFilterInput.addEventListener('input', filterRows);
+    severityFilterSelect.addEventListener('change', filterRows);
+    readStatusFilterSelect.addEventListener('change', filterRows);
+});
