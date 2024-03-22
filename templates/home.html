@@ -41,15 +41,21 @@
         labels: ["SQL Injection", "Cross-Site Scripting", "Path Traversal"],
         datasets: [{
             data: [30, 20, 15],
-            backgroundColor: ["#ff6384", "#36a2eb", "#ffce56"]
         }]
     };
 
     var severityTypeData = {
-        labels: ["Low", "Medium", "High"],
+        labels: [
+            {% for i in data %}
+                '{{ i.severity }}', 
+            {% endfor %}
+        ],
         datasets: [{
-            data: [10, 15, 25],
-            backgroundColor: ["#36a2eb", "#ffce56", "#ff6384"]
+            data: [
+                {% for i in data %}
+                '{{ i.count }}', 
+                {% endfor %}
+            ],
         }]
     };
 
@@ -57,7 +63,6 @@
         labels: ["Read", "Unread"],
         datasets: [{
             data: [40, 30],
-            backgroundColor: ["#36a2eb", "#ff6384"]
         }]
     };
 

@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404 ,redirect
+from django.shortcuts import render, HttpResponse ,redirect
 from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from django.contrib.auth.models import User
 
 from .models import *
 
@@ -25,32 +26,57 @@ def index(request):
     return render(request, 'index.html')
 
 
-def signup(request):
-    return render(request, 'signup.html')
-
 @login_required(login_url='Login')
 def dashboard(request):
-    return render(request, 'home.html')
+    
+    if request.method == "GET":
+        queryset = Report.objects.values('severity').annotate(count=Count('severity'))
+    
+        context = {
+            "data" : queryset
+        }
+        return render(request, 'home.html', context=context)
 
 @login_required(login_url='Login')
 def reports(request):
-    data = ReportReadStatus.objects.all()
-    context = {
-        "data" : data
-    }
-    return render(request, 'reports.html', context=context)
+    if request.method == "GET":
+        reports = Report.objects.all()
+        
+        context = {
+            "data" : reports ,
+        }
+        return render(request, 'reports.html', context=context)
+    return JsonResponse({"message" : "Method Not Allowd"}, status=405)
 
 @login_required(login_url='Login')
-def update_reports(request, report_id):
+def update_reports(request,  report_id):
     if request.method == "POST":
-        report = get_object_or_404(Report, report_id = report_id)
         if request.user.is_authenticated:
-            report_read_status,created = ReportReadStatus.objects.get_or_create(user=request.user, report=report)
-            report_read_status.is_read = True
-            report_read_status.save()
-            return HttpResponse('Success')
-    return HttpResponse("error happened")
+            report_read_status = Report.objects.filter(report_id=report_id).update(is_read=True)
+            return JsonResponse({"success": True})
+        return JsonResponse({"message": "Unauthorized"}, status=401)
+    return JsonResponse({"message": "Method Not Allowd"}, status=405)
 
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        check_user = User.objects.filter(username=username).exists()
+        
+        if check_user:
+            context = {
+                "message" : 'Username already exists'
+            }
+            return render(request, 'signup.html', context=context)
+        # Creating the user
+        user = User.objects.create_user(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('Dashboard')
+        return render(request, 'signup.html')  # Redirect to dashboard or any other desired page
+    return render(request, 'signup.html')
 
 def signout(request):
     logout(request)
