@@ -38,22 +38,30 @@
 <script>
     // Data for charts
     var vulnerabilityTypeData = {
-        labels: ["SQL Injection", "Cross-Site Scripting", "Path Traversal"],
+        labels: [    
+    {% for i in cwe_data %}
+        '{{ i.cwe }}', 
+    {% endfor %}
+    ],
         datasets: [{
-            data: [30, 20, 15],
-        }]
-    };
+            data: [
+            {% for i in cwe_data %}
+            '{{ i.cwe_dataset }}', 
+            {% endfor %}
+        ],
+    }]
+};
 
     var severityTypeData = {
         labels: [
-            {% for i in data %}
+            {% for i in severity_data %}
                 '{{ i.severity }}', 
             {% endfor %}
         ],
         datasets: [{
             data: [
-                {% for i in data %}
-                '{{ i.count }}', 
+                {% for i in severity_data %}
+                '{{ i.severity_dataset }}', 
                 {% endfor %}
             ],
         }]
@@ -62,7 +70,11 @@
     var readStatusData = {
         labels: ["Read", "Unread"],
         datasets: [{
-            data: [40, 30],
+            data: [
+            {% for i in read_data %}
+            '{{ i.is_read_dataset }}', 
+            {% endfor %}
+        ],
         }]
     };
 
@@ -92,7 +104,7 @@
 
     var ctx3 = document.getElementById("readStatusChart").getContext("2d");
     new Chart(ctx3, {
-        type: 'pie',
+        type: 'doughnut',
         data: readStatusData,
         options: chartOptions
     });

@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse ,redirect
 from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count
+from django.db.models import Sum, Count
 from django.contrib.auth.models import User
 
 from .models import *
@@ -30,10 +30,14 @@ def index(request):
 def dashboard(request):
     
     if request.method == "GET":
-        queryset = Report.objects.values('severity').annotate(count=Count('severity'))
-    
+        queryset_severity = Report.objects.values('severity').annotate(severity_dataset=Count('severity'))
+        queryset_cwe = Report.objects.values('cwe').annotate(cwe_dataset=Count('cwe'))
+        queryset_is_read = Report.objects.values('is_read').annotate(is_read_dataset=Count('severity'))
+
         context = {
-            "data" : queryset
+            "severity_data" : queryset_severity,
+            "cwe_data" : queryset_cwe,
+            "read_data" : queryset_is_read
         }
         return render(request, 'home.html', context=context)
 
