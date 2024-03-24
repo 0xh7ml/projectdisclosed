@@ -22,6 +22,8 @@ Before installing ProjectDisclosed, ensure you have the following prerequisites 
 
 - ```https://github.com/0xh7ml/projectdisclosed.git```
 - ```cd projectdisclosed```
+- ```python -m venv env (Windows) python3 -m venv env (macOs/Linux)```
+- ```source env/Scripts/activate(Windows) source env/bin/activate (macOs/Linux)```
 - ```pip install -r requirements.txt```
 - ```python manage.py migrate (Windows) python3 manage.py migrate (macOs/Linux)```
 - ```python manage.py runserver```
