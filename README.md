@@ -29,7 +29,7 @@ Before installing ProjectDisclosed, ensure you have the following prerequisites 
 
 ## Usage
 
-1. log in to your ProjectDisclosed account by admin:admin.
+1. log in to your ProjectDisclosed account by ```admin:admin```.
 2. Start reading disclosed reports.
 3. Mark as read when you read any reports for better stats.
 
