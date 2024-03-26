@@ -43,7 +43,3 @@ Contributions to ProjectDisclosed are welcome! If you'd like to contribute, plea
 2. Create a new branch for your feature or bug fix.
 3. Make your changes and ensure tests pass.
 4. Submit a pull request detailing your changes.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE). Feel free to modify and distribute the code for your own purposes.
