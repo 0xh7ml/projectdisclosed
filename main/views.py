@@ -2,8 +2,9 @@ from django.shortcuts import render, HttpResponse ,redirect
 from django.http import JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum, Count
+from django.db.models import Count
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import *
 
@@ -44,13 +45,27 @@ def dashboard(request):
 @login_required(login_url='Login')
 def reports(request):
     if request.method == "GET":
-        reports = Report.objects.all()
+        report_list = Report.objects.all().order_by('-report_id')
         
+        """ Paginator """
+        paginator = Paginator(report_list, per_page=10)
+        
+        
+        """ default page num """
+        page_num = request.GET.get('page', 1)
+    
+        
+        try:
+            reports = paginator.page(page_num)
+        except PageNotAnInteger:
+            reports = paginator.page(1)
+        except EmptyPage:
+            reports = paginator.page(paginator.num_pages)            
         context = {
             "data" : reports ,
         }
         return render(request, 'reports.html', context=context)
-    return JsonResponse({"message" : "Method Not Allowd"}, status=405)
+    return HttpResponse({"message" : "Method Not Allowd"}, status=405)
 
 @login_required(login_url='Login')
 def update_reports(request,  report_id):

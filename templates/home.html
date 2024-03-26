@@ -52,14 +52,15 @@
 };
 
     var severityTypeData = {
-        labels: ['Low', 'Medium', 'High', 'Critical'],
+        labels: ['Critical', 'High', 'Low', 'Medium'],
         datasets: [{
             data: [
                 {% for i in severity_data %}
                 '{{ i.severity_dataset }}', 
                 {% endfor %}
             ],
-            backgroundColor: ['#e5f2d6','#fdf2e3','#ffe7d6','#f8dfdf']
+            {% comment %} backgroundColor: ['#fdf2e3','#ffe7d6','#e5f2d6','#f8dfdf'] {% endcomment %}
+            backgroundColor: ['#f8dfdf','#ffe7d6','#e5f2d6','#fdf2e3']
         }]
     };
 
@@ -87,7 +88,7 @@
     // Create charts
     var ctx1 = document.getElementById("vulnerabilityTypeChart");
     new Chart(ctx1, {
-        type: 'bar',
+        type: 'pie',
         data: vulnerabilityTypeData,
         options: chartOptions
     });

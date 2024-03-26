@@ -5,7 +5,6 @@
     {% endblock title %}
 
 {% block content %}
-<div class="container">
     <div class="row mb-3">
         <div class="col-md-4">
             <input class="form-control" id="cweFilter" placeholder="Filter by CWE">
@@ -34,10 +33,10 @@
                 <tr>
                     <th>Id</th>
                     <th>Report Title</th>
-                    <th>Report CWE</th>
-                    <th>Report Severity</th>
-                    <th>Report State</th>
-                    <th>Report URL</th>
+                    <th>CWE</th>
+                    <th>Severity</th>
+                    <th>State</th>
+                    <th>URL</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -71,6 +70,7 @@
             </tbody>
         </table>
     </div>
-</div>
+
+    {% include "paginator.html" %}
 
 {% endblock content %}
